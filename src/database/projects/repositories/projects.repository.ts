@@ -1,12 +1,12 @@
 import { InjectModel } from 'nestjs-objection';
 import { ModelClass } from 'objection';
-import { Project } from './projects.model';
+import { Project } from '../projects.model';
 import {
   IArchivedProject,
   ICreateProject,
   IProject,
   IUpdateProject,
-} from './projects.interface';
+} from '../interfaces/projects.interface';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -19,9 +19,9 @@ export class ProjectsRepository {
     return this.projectModel.query().insert(createProject);
   }
 
-  async addUserToProject(projectId: number, userId: number): Promise<void> {
-    await this.projectModel.relatedQuery('users').for(projectId).relate(userId);
-  }
+  // async addUserToProject(projectId: number, userId: number): Promise<void> {
+  //   await this.projectModel.relatedQuery('users').for(projectId).relate(userId);
+  // }
 
   async getProjects(): Promise<IProject[]> {
     return this.projectModel.query();
@@ -35,9 +35,22 @@ export class ProjectsRepository {
     return this.projectModel.query().findOne({ title });
   }
 
-  async getCreatorById(creatorId: number): Promise<IProject | null> {
-    return this.projectModel.query().findById(creatorId);
+  async getCreatorById(id: number): Promise<IProject | null> {
+    return this.projectModel.query().findById(id);
   }
+
+  // async doesUserProjectRelationExist(
+  //   projectId: number,
+  //   userId: number,
+  // ): Promise<boolean> {
+  //   const relationExists = await this.projectModel
+  //     .relatedQuery('users')
+  //     .for(projectId)
+  //     .where('id', userId)
+  //     .first();
+
+  //   return relationExists !== undefined;
+  // }
 
   async updateProjectById(
     projectId: number,
@@ -63,14 +76,14 @@ export class ProjectsRepository {
     await this.projectModel.query().deleteById(projectId);
   }
 
-  async deleteUserFromProject(
-    projectId: number,
-    userId: number,
-  ): Promise<void> {
-    await this.projectModel
-      .relatedQuery('users')
-      .for(projectId)
-      .unrelate()
-      .where('userId', userId);
-  }
+  // async deleteUserFromProject(
+  //   projectId: number,
+  //   userId: number,
+  // ): Promise<void> {
+  //   await this.projectModel
+  //     .relatedQuery('users')
+  //     .for(projectId)
+  //     .unrelate()
+  //     .where('userId', userId);
+  // }
 }

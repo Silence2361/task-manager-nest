@@ -2,7 +2,7 @@ export interface IProject {
   id: number;
   title: string;
   description: string;
-  creatorId: number;
+  userId: number;
   createdAt: Date;
   isArchived: boolean;
 }
@@ -10,7 +10,7 @@ export interface IProject {
 export interface ICreateProject {
   title: string;
   description: string;
-  creatorId: number;
+  userId: number;
   createdAt: Date;
 }
 
@@ -18,7 +18,7 @@ export interface IGetAllProjectsResponse {
   id: number;
   title: string;
   description: string;
-  creatorId: number;
+  userId: number;
   createdAt: Date;
   isArchived: boolean;
 }
@@ -31,7 +31,7 @@ export interface IGetProjectByIdResponse {
   id: number;
   title: string;
   description: string;
-  creatorId: number;
+  userId: number;
   createdAt: Date;
   isArchived: boolean;
 }
@@ -47,4 +47,9 @@ export interface IArchivedProject {
 export interface IUpdateProject {
   title?: string;
   description?: string;
+  isArchived?: boolean;
+}
+
+export interface IDeleteProject {
+  id: number;
 }

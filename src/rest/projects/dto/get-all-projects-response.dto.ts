@@ -11,7 +11,7 @@ export class GetAllProjectsResponseDto {
   description: string;
 
   @ApiProperty()
-  creatorId: number;
+  userId: number;
 
   @ApiProperty()
   createdAt: Date;

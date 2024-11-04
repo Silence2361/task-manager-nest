@@ -41,7 +41,7 @@ export class User extends Model {
     return {
       projects: {
         relation: Model.ManyToManyRelation,
-        modelClass: Project,
+        modelClass: () => Project,
         join: {
           from: 'users.id',
           through: {
