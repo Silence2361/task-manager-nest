@@ -4,7 +4,6 @@ import { User } from './users/users.model';
 import { UsersRepository } from './users/users.repository';
 import { Project } from './projects/projects.model';
 import { ProjectsRepository } from './projects/projects.repository';
-
 // import { Task } from './tasks/tasks.model';
 // import { TasksRepository } from './tasks/tasks.repository';
 
@@ -12,6 +11,6 @@ import { ProjectsRepository } from './projects/projects.repository';
 @Module({
   imports: [ObjectionModule.forFeature([User, Project])],
   providers: [UsersRepository, ProjectsRepository],
-  exports: [UsersRepository],
+  exports: [UsersRepository, ProjectsRepository],
 })
 export class DatabaseModule {}
