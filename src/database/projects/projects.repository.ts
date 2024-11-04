@@ -3,7 +3,7 @@ import { ModelClass } from 'objection';
 import { Project } from './projects.model';
 import {
   IArchivedProject,
-  ICreareProject,
+  ICreateProject,
   IProject,
   IUpdateProject,
 } from './projects.interface';
@@ -15,7 +15,7 @@ export class ProjectsRepository {
     @InjectModel(Project) private readonly projectModel: ModelClass<Project>,
   ) {}
 
-  async createProject(createProject: ICreareProject): Promise<IProject> {
+  async createProject(createProject: ICreateProject): Promise<IProject> {
     return this.projectModel.query().insert(createProject);
   }
 
@@ -29,6 +29,14 @@ export class ProjectsRepository {
 
   async getProjectById(projectId: number): Promise<IProject> {
     return this.projectModel.query().findById(projectId);
+  }
+
+  async getProjectByTitle(title: string): Promise<IProject | null> {
+    return this.projectModel.query().findOne({ title });
+  }
+
+  async getCreatorById(creatorId: number): Promise<IProject | null> {
+    return this.projectModel.query().findById(creatorId);
   }
 
   async updateProjectById(
