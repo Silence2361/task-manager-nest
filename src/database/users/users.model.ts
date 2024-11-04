@@ -7,13 +7,14 @@ export enum UserRole {
 }
 
 export class User extends Model {
-  static tableName: 'users';
+  static tableName = 'users';
+  static schemaName = 'public';
 
   id: number;
   name: string;
   email: string;
   password: string;
-  role: UserRole; //будет модель role
+  role: UserRole;
   isArchived: boolean;
 
   static get jsonSchema() {
@@ -29,7 +30,7 @@ export class User extends Model {
           minLength: 5,
           maxLength: 255,
         },
-        password: { type: 'string', minLength: 8, maxLenght: 12 },
+        password: { type: 'string', minLength: 8, maxLength: 255 },
         role: {
           type: 'string',
           enum: Object.values(UserRole),

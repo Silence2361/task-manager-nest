@@ -9,7 +9,9 @@ import {
   ITask,
   IUpdateTask,
 } from './tasks.interface';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class TasksRepository {
   constructor(
     @InjectModel(Task) private readonly taskModel: ModelClass<Task>,

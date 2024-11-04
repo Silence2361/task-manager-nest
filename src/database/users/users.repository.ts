@@ -5,7 +5,7 @@ import { ModelClass } from 'objection';
 import {
   IArchivedUser,
   ICreateUser,
-  IUpdateUser,
+  IUpdateUserById,
   IUser,
 } from './users.interface';
 
@@ -31,7 +31,10 @@ export class UsersRepository {
     return this.userModel.query().findOne({ email });
   }
 
-  async updateUserById(userId: number, updateUser: IUpdateUser): Promise<void> {
+  async updateUserById(
+    userId: number,
+    updateUser: IUpdateUserById,
+  ): Promise<void> {
     await this.userModel.query().patchAndFetchById(userId, updateUser);
   }
 

@@ -7,7 +7,9 @@ import {
   IProject,
   IUpdateProject,
 } from './projects.interface';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class ProjectsRepository {
   constructor(
     @InjectModel(Project) private readonly projectModel: ModelClass<Project>,
