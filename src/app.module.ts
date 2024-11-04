@@ -8,6 +8,7 @@ import { UsersModule } from './rest/users/users.module';
 import { ProjectsController } from './rest/projects/projects.controller';
 import { ProjectsService } from './rest/projects/projects.service';
 import { ProjectsModule } from './rest/projects/projects.module';
+import { AuthModule } from './rest/auth/auth.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { ProjectsModule } from './rest/projects/projects.module';
     DatabaseModule,
     UsersModule,
     ProjectsModule,
+    AuthModule,
   ],
   controllers: [ProjectsController],
   providers: [ProjectsService],
