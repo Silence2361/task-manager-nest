@@ -5,6 +5,7 @@ import Knex from 'knex';
 import { Model } from 'objection';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './rest/users/users.module';
+import { AuthModule } from './rest/auth/auth.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { UsersModule } from './rest/users/users.module';
     }),
     DatabaseModule,
     UsersModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

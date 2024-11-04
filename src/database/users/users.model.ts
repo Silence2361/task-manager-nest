@@ -1,10 +1,6 @@
 import { Model, RelationMappings } from 'objection';
 import { Project } from '../projects/projects.model';
-
-export enum UserRole {
-  ADMIN = 'ADMIN',
-  EMPLOYEE = 'EMPLOYEE',
-}
+import { UserRole } from 'src/common/enum/user-role.enum';
 
 export class User extends Model {
   static tableName = 'users';

@@ -97,8 +97,6 @@ export class UsersService {
   }
 
   async archiveUserById(userId: number): Promise<void> {
-    // const { userId } = params;
-
     const user: IUser | null = await this.usersRepository.getUserById(userId);
 
     if (!user || user.isArchived) {
