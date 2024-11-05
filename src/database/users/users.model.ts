@@ -1,6 +1,5 @@
 import { Model, RelationMappings } from 'objection';
 import { Project } from '../projects/projects.model';
-import { UserRole } from 'src/common/enum/user-role.enum';
 import { Role } from '../roles/roles.model';
 
 export class User extends Model {
@@ -14,10 +13,12 @@ export class User extends Model {
   roleId: number;
   isArchived: boolean;
 
+  role?: Role;
+
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['name', 'email', 'password', 'role'],
+      required: ['name', 'email', 'password', 'roleId'],
       properties: {
         id: { type: 'integer' },
         name: { type: 'string', minLength: 1, maxLength: 255 },
@@ -28,11 +29,7 @@ export class User extends Model {
           maxLength: 255,
         },
         password: { type: 'string', minLength: 8, maxLength: 255 },
-        role: {
-          type: 'string',
-          enum: Object.values(UserRole),
-          default: UserRole.EMPLOYEE,
-        },
+        roleId: { type: 'integer' },
         isArchived: { type: 'boolean', default: false },
       },
     };

@@ -36,7 +36,7 @@ export class RolesGuard implements CanActivate {
       );
     }
 
-    const userWithRole = await this.usersRepository.findUserWithRoleById(
+    const userWithRole = await this.usersRepository.getUserWithRoleById(
       user.id,
     );
 

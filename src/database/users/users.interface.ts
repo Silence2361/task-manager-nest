@@ -1,5 +1,3 @@
-import { UserRole } from 'src/common/enum/user-role.enum';
-
 export interface IUser {
   id: number;
   name: string;
