@@ -1,8 +1,10 @@
 import {
   ConflictException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { UserRole } from 'src/common/enum/user-role.enum';
 import { ProjectsRepository } from 'src/database/projects/repositories/projects.repository';
 import {
   ICreateTask,
@@ -94,8 +96,21 @@ export class TasksService {
     };
   }
 
-  async updateTaskById(id: number, params: IUpdateTaskById): Promise<void> {
+  async updateTaskById(
+    id: number,
+    params: IUpdateTaskById,
+    user,
+  ): Promise<void> {
     const { title, description, projectId, assigneeId } = params;
+
+    const task = await this.tasksRepository.getTaskById(id);
+    if (!task) {
+      throw new NotFoundException(`Task with ${id} not found`);
+    }
+
+    if (user.role === UserRole.EMPLOYEE && task.assigneeId !== user.id) {
+      throw new ForbiddenException('You can only update tasks assigned to you');
+    }
 
     const existingTask = await this.tasksRepository.getTaskByTitle(title);
 
@@ -137,11 +152,17 @@ export class TasksService {
     await this.tasksRepository.updateTaskById(id, { isArchived: true });
   }
 
-  async markTaskAsCompleted(id: number): Promise<void> {
+  async markTaskAsCompleted(id: number, user): Promise<void> {
     const task = await this.tasksRepository.getTaskById(id);
 
     if (!task) {
       throw new NotFoundException(`Task with ID ${id} not found`);
+    }
+
+    if (user.role === UserRole.EMPLOYEE && task.assigneeId !== user.id) {
+      throw new ForbiddenException(
+        'You can only complete tasks assigned to you',
+      );
     }
 
     await this.tasksRepository.setStatus(task.id, { status: true });

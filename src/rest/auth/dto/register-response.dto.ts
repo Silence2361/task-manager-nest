@@ -8,5 +8,5 @@ export class RegisterResponseDto {
   email: string;
 
   @ApiProperty({ example: 'user', description: 'User role' })
-  role: string;
+  roleId: number;
 }

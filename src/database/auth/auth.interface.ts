@@ -1,17 +1,15 @@
-import { UserRole } from 'src/common/enum/user-role.enum';
-
 export interface IRegister {
   name: string;
   email: string;
   password: string;
-  role: UserRole;
+  roleName: string;
 }
 
 export interface IRegisterResponse {
   id: number;
   name: string;
   email: string;
-  role: UserRole;
+  roleId: number;
 }
 
 export interface ILogin {

@@ -15,14 +15,13 @@ import {
 } from 'src/database/users/users.interface';
 import { UsersRepository } from 'src/database/users/users.repository';
 import * as bcrypt from 'bcryptjs';
-import { User } from 'src/database/users/users.model';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
   async createUser(params: ICreateUser): Promise<ICreateUserResponse> {
-    const { name, email, password, role } = params;
+    const { name, email, password, roleId } = params;
 
     const existingUser = await this.usersRepository.getUserByEmail(email);
 
@@ -36,7 +35,7 @@ export class UsersService {
       name,
       email,
       password: hashedPassword,
-      role,
+      roleId,
     });
 
     return { id: user.id };
@@ -49,8 +48,7 @@ export class UsersService {
       id: user.id,
       name: user.name,
       email: user.email,
-      role: user.role,
-      isArchived: user.isArchived,
+      roleId: user.roleId,
     }));
   }
 
@@ -67,12 +65,12 @@ export class UsersService {
       id: user.id,
       name: user.name,
       email: user.email,
-      role: user.role,
+      roleId: user.roleId,
     };
   }
 
   async updateUserById(userId: number, params: IUpdateUserById): Promise<void> {
-    const { name, email, password, role } = params;
+    const { name, email, password, roleId } = params;
 
     const user: IUser | null = await this.usersRepository.getUserById(userId);
 
@@ -90,7 +88,7 @@ export class UsersService {
       name,
       email,
       password: hashedPassword || password,
-      role,
+      roleId,
     };
 
     await this.usersRepository.updateUserById(userId, updateUserData);
@@ -100,7 +98,9 @@ export class UsersService {
     const user: IUser | null = await this.usersRepository.getUserById(userId);
 
     if (!user || user.isArchived) {
-      throw new NotFoundException(`User with id ${userId} not found`);
+      throw new NotFoundException(
+        `User with id ${userId} not found or already archived`,
+      );
     }
 
     await this.usersRepository.updateUserById(userId, { isArchived: true });

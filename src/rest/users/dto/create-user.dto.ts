@@ -28,17 +28,15 @@ export class CreateUserDto {
   })
   @IsNotEmpty()
   @IsString()
-  // @MinLength(6)
-  // @MaxLength(25)
+  @MinLength(6)
+  @MaxLength(25)
   password: string;
 
   @ApiProperty({
-    example: UserRole.EMPLOYEE,
+    example: 'Role',
     description: 'The role of the user',
-    enum: UserRole,
   })
-  @IsEnum(UserRole)
   @IsString()
   @IsNotEmpty()
-  role: UserRole;
+  roleId: number;
 }

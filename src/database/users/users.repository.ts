@@ -31,6 +31,10 @@ export class UsersRepository {
     return this.userModel.query().findOne({ email });
   }
 
+  async findUserWithRoleById(userId: number): Promise<User | null> {
+    return this.userModel.query().findById(userId).withGraphFetched('role');
+  }
+
   async updateUserById(
     userId: number,
     updateUser: IUpdateUserById,

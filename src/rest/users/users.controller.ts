@@ -10,15 +10,21 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { CreateUserResponceDto } from './dto/create-user-response.dto';
-import { CreateUserDto } from './dto/create-user.dto';
-import { GetUsersResponseDto } from './dto/get-users-response.dto';
-import { UpdateUserByIdDto } from './dto/update-user-by-id.dto';
-import { GetUserByIdResponseDto } from './dto/get-user-by-id-response.dto';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/third-party/jwt/jwt-auth.guard';
+import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserResponceDto } from './dto/create-user-response.dto';
+import { GetUsersResponseDto } from './dto/get-users-response.dto';
+import { GetUserByIdResponseDto } from './dto/get-user-by-id-response.dto';
+import { UpdateUserByIdDto } from './dto/update-user-by-id.dto';
 
 @ApiTags('Users')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {

@@ -1,6 +1,7 @@
 import { Model, RelationMappings } from 'objection';
 import { Project } from '../projects/projects.model';
 import { UserRole } from 'src/common/enum/user-role.enum';
+import { Role } from '../roles/roles.model';
 
 export class User extends Model {
   static tableName = 'users';
@@ -10,7 +11,7 @@ export class User extends Model {
   name: string;
   email: string;
   password: string;
-  role: UserRole;
+  roleId: number;
   isArchived: boolean;
 
   static get jsonSchema() {
@@ -49,6 +50,14 @@ export class User extends Model {
             to: 'projectUsers.projectId',
           },
           to: 'projects.id',
+        },
+      },
+      role: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Role,
+        join: {
+          from: 'users.roleId',
+          to: 'roles.id',
         },
       },
     };

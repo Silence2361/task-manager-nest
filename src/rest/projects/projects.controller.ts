@@ -14,12 +14,18 @@ import { CreateProjectResponseDto } from './dto/create-project-response.dto';
 import { GetAllProjectsResponseDto } from './dto/get-all-projects-response.dto';
 import { GetProjectByIdResponseDto } from './dto/get-project-by-id-response.dto';
 import { UpdateProjectByIdDto } from './dto/update-project.dto';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AddUserToProjectDto } from './dto/add-user-project.dto';
 import { ArchiveProjectDto } from './dto/archive-project.dto';
 import { JwtAuthGuard } from 'src/third-party/jwt/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 @ApiTags('projects')
 @Controller('projects')
 export class ProjectsController {

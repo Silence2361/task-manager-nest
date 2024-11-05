@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Put,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
@@ -15,7 +16,12 @@ import { CreateTaskResponseDto } from './dto/create-task-response.dto';
 import { GetTaskByIdResponseDto } from './dto/get-task-by-id-response.dto';
 import { GetTasksResponseDto } from './dto/get-tasks-response.dto';
 import { UpdateTaskByIdDto } from './dto/update-task-by-id.dto';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { SetDeadlineDto } from './dto/set-deadline.dto';
 import { SetDeadlineResponseDto } from './dto/set-deadline-response.dto';
 import { MoveTaskDto } from './dto/move-task.dto';
@@ -23,15 +29,19 @@ import { MoveTaskResponseDto } from './dto/move-task-response.dto';
 import { AssignUserToTaskDto } from './dto/assign-user-to-task.dto';
 import { AssignUserToTaskResponseDto } from './dto/assign-user-to-task-response.dto';
 import { JwtAuthGuard } from 'src/third-party/jwt/jwt-auth.guard';
+import { RolesGuard } from 'src/third-party/guards/roles.guard';
+import { Roles } from 'src/common/decorators/roles.decorator';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
+@ApiBearerAuth()
 @ApiTags('tasks')
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create a new task' })
+  @Roles('ADMIN')
+  @ApiOperation({ summary: 'Create a new task (Admin only)' })
   @ApiResponse({
     status: 201,
     description: 'Task created successfully',
@@ -67,17 +77,19 @@ export class TasksController {
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'Update a task by ID' })
+  @Roles('ADMIN', 'EMPLOYEE')
+  @ApiOperation({ summary: 'Update a task by ID (Admin and Employee)' })
   @ApiResponse({ status: 200, description: 'Task updated successfully' })
   @ApiResponse({ status: 404, description: 'Task not found' })
   async updateTaskById(
     @Param('id') id: number,
     @Body() updateTask: UpdateTaskByIdDto,
+    @Req() req,
   ): Promise<void> {
-    return this.tasksService.updateTaskById(id, updateTask);
+    return this.tasksService.updateTaskById(id, updateTask, req.user);
   }
 
-  @Put(':id/archive')
+  @Patch(':id/archive')
   @ApiOperation({ summary: 'Archive task' })
   @ApiResponse({ status: 200, description: 'Task archived successfully' })
   @ApiResponse({ status: 404, description: 'Task not found' })
@@ -93,7 +105,7 @@ export class TasksController {
     return this.tasksService.deleteTaskById({ id });
   }
 
-  @Put(':id/deadline')
+  @Patch(':id/deadline')
   @ApiOperation({ summary: 'Set deadline for a task' })
   @ApiResponse({
     status: 200,
@@ -112,12 +124,16 @@ export class TasksController {
   @ApiOperation({ summary: 'Mark task as completed or not' })
   @ApiResponse({ status: 200, description: 'Task status updated successfully' })
   @ApiResponse({ status: 404, description: 'Task not found' })
-  async markTaskAsCompleted(@Param('id') id: number): Promise<void> {
-    return this.tasksService.markTaskAsCompleted(id);
+  async markTaskAsCompleted(
+    @Param('id') id: number,
+    @Req() req,
+  ): Promise<void> {
+    return this.tasksService.markTaskAsCompleted(id, req.user);
   }
 
   @Patch(':id/project')
-  @ApiOperation({ summary: 'Move task to another project' })
+  @Roles('EMPLOYEE')
+  @ApiOperation({ summary: 'Move task to another project (Employee only)' })
   @ApiResponse({
     status: 200,
     description: 'Task moved to project successfully',
@@ -132,7 +148,8 @@ export class TasksController {
   }
 
   @Patch(':id/assign')
-  @ApiOperation({ summary: 'Assign a user to the task' })
+  @Roles('ADMIN')
+  @ApiOperation({ summary: 'Assign a user to the task (Admin only)' })
   @ApiResponse({
     status: 200,
     description: 'User assigned to task successfully',

@@ -5,7 +5,7 @@ export interface IUser {
   name: string;
   email: string;
   password: string;
-  role: UserRole;
+  roleId: number;
   isArchived: boolean;
 }
 
@@ -13,7 +13,7 @@ export interface ICreateUser {
   name: string;
   email: string;
   password: string;
-  role: UserRole;
+  roleId: number;
 }
 
 export interface ICreateUserResponse {
@@ -24,7 +24,7 @@ export interface IGetAllUsersResponse {
   id: number;
   name: string;
   email: string;
-  role: UserRole;
+  roleId: number;
 }
 
 export interface IGetUserById {
@@ -35,7 +35,7 @@ export interface IGetUserByIdResponse {
   id: number;
   name: string;
   email: string;
-  role: UserRole;
+  roleId: number;
 }
 
 export interface IArchivedUser {
@@ -46,7 +46,7 @@ export interface IUpdateUserById {
   name?: string;
   email?: string;
   password?: string;
-  role?: UserRole;
+  roleId?: number;
   isArchived?: boolean;
 }
 

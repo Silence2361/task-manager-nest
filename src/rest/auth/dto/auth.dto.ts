@@ -4,9 +4,8 @@ import {
   IsEmail,
   MinLength,
   MaxLength,
-  IsEnum,
+  IsInt,
 } from 'class-validator';
-import { UserRole } from 'src/common/enum/user-role.enum';
 
 export class AuthDto {
   @ApiProperty({
@@ -31,6 +30,7 @@ export class AuthDto {
   @MaxLength(16)
   password: string;
 
-  @IsEnum(UserRole)
-  role: UserRole;
+  @ApiProperty()
+  @IsString()
+  roleName: string;
 }
