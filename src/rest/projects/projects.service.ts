@@ -14,7 +14,6 @@ import {
   IProject,
   IUpdateProject,
 } from 'src/database/projects/projects.interface';
-import { Project } from 'src/database/projects/projects.model';
 import { ProjectUsersRepository } from 'src/database/projects/repositories/project-users.repository';
 import { ProjectsRepository } from 'src/database/projects/repositories/projects.repository';
 import { UsersRepository } from 'src/database/users/users.repository';

@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Put,
   UseGuards,
@@ -21,7 +22,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { AddUserToProjectDto } from './dto/add-user-project.dto';
-import { ArchiveProjectDto } from './dto/archive-project.dto';
 import { JwtAuthGuard } from 'src/third-party/jwt/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
@@ -92,14 +92,11 @@ export class ProjectsController {
     await this.projectsService.updateProjectById(id, updateProject);
   }
 
-  @Put(':id/archive')
+  @Patch(':id/archive')
   @ApiOperation({ summary: 'Archiv project' })
   @ApiResponse({ status: 200, description: 'Project archived successfully' })
   @ApiResponse({ status: 404, description: 'Project not found.' })
-  async archiveProjectById(
-    @Param('id') projectId: number,
-    @Body() archiveProjectDto: ArchiveProjectDto,
-  ): Promise<void> {
+  async archiveProjectById(@Param('id') projectId: number): Promise<void> {
     await this.projectsService.archiveProjectById(projectId);
   }
 

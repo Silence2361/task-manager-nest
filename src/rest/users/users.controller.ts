@@ -69,7 +69,7 @@ export class UsersController {
     await this.usersService.updateUserById(id, updateUserDto);
   }
 
-  @Put(':id/archive')
+  @Patch(':id/archive')
   @ApiOperation({ summary: 'Archive a user' })
   @ApiResponse({ status: 200, description: 'User archived successfully.' })
   @ApiResponse({ status: 404, description: 'User not found.' })
