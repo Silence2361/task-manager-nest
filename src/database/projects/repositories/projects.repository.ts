@@ -6,7 +6,7 @@ import {
   ICreateProject,
   IProject,
   IUpdateProject,
-} from '../interfaces/projects.interface';
+} from '../projects.interface';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -18,10 +18,6 @@ export class ProjectsRepository {
   async createProject(createProject: ICreateProject): Promise<IProject> {
     return this.projectModel.query().insert(createProject);
   }
-
-  // async addUserToProject(projectId: number, userId: number): Promise<void> {
-  //   await this.projectModel.relatedQuery('users').for(projectId).relate(userId);
-  // }
 
   async getProjects(): Promise<IProject[]> {
     return this.projectModel.query();
@@ -38,19 +34,6 @@ export class ProjectsRepository {
   async getCreatorById(id: number): Promise<IProject | null> {
     return this.projectModel.query().findById(id);
   }
-
-  // async doesUserProjectRelationExist(
-  //   projectId: number,
-  //   userId: number,
-  // ): Promise<boolean> {
-  //   const relationExists = await this.projectModel
-  //     .relatedQuery('users')
-  //     .for(projectId)
-  //     .where('id', userId)
-  //     .first();
-
-  //   return relationExists !== undefined;
-  // }
 
   async updateProjectById(
     projectId: number,
@@ -75,15 +58,4 @@ export class ProjectsRepository {
   async deleteProjectById(projectId: number): Promise<void> {
     await this.projectModel.query().deleteById(projectId);
   }
-
-  // async deleteUserFromProject(
-  //   projectId: number,
-  //   userId: number,
-  // ): Promise<void> {
-  //   await this.projectModel
-  //     .relatedQuery('users')
-  //     .for(projectId)
-  //     .unrelate()
-  //     .where('userId', userId);
-  // }
 }
