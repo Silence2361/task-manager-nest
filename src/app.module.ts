@@ -9,6 +9,9 @@ import { ProjectsController } from './rest/projects/projects.controller';
 import { ProjectsService } from './rest/projects/projects.service';
 import { ProjectsModule } from './rest/projects/projects.module';
 import { AuthModule } from './rest/auth/auth.module';
+import { TasksService } from './rest/tasks/tasks.service';
+import { TasksController } from './rest/tasks/tasks.controller';
+import { TasksModule } from './rest/tasks/tasks.module';
 
 @Module({
   imports: [
@@ -42,8 +45,9 @@ import { AuthModule } from './rest/auth/auth.module';
     UsersModule,
     ProjectsModule,
     AuthModule,
+    TasksModule,
   ],
-  controllers: [ProjectsController],
-  providers: [ProjectsService],
+  controllers: [ProjectsController, TasksController],
+  providers: [ProjectsService, TasksService],
 })
 export class AppModule {}

@@ -7,7 +7,7 @@ import {
   IDeadline,
   IStatus,
   ITask,
-  IUpdateTask,
+  IUpdateTaskById,
 } from './tasks.interface';
 import { Injectable } from '@nestjs/common';
 
@@ -33,13 +33,11 @@ export class TasksRepository {
     return this.taskModel.query().where('projectId', projectId);
   }
 
-  async setStatus(taskId: number, setStatus: IStatus): Promise<ITask> {
-    const { status } = setStatus;
-    return this.taskModel.query().patchAndFetchById(taskId, { status });
+  async getTaskByTitle(title: string): Promise<ITask> {
+    return this.taskModel.query().findOne({ title });
   }
 
-  async setDeadline(taskId: number, setDeadline: IDeadline): Promise<ITask> {
-    const { deadline } = setDeadline;
+  async setDeadline(taskId: number, deadline: Date): Promise<ITask> {
     return this.taskModel.query().patchAndFetchById(taskId, { deadline });
   }
 
@@ -57,19 +55,23 @@ export class TasksRepository {
 
   async updateTaskById(
     taskId: number,
-    updateProject: IUpdateTask,
+    updateProject: IUpdateTaskById,
   ): Promise<void> {
     await this.taskModel.query().patchAndFetchById(taskId, updateProject);
   }
 
   async archiveTask(taskId: number, archived: IArchivedTask): Promise<ITask> {
-    const { isArchived } = archived;
-
     const task = await this.taskModel
       .query()
-      .patchAndFetchById(taskId, { isArchived: true });
+      .patchAndFetchById(taskId, { isArchived: archived.isArchived });
 
     return task;
+  }
+
+  async setStatus(taskId: number, setStatus: IStatus): Promise<ITask> {
+    return this.taskModel
+      .query()
+      .patchAndFetchById(taskId, { isCompleted: setStatus.status });
   }
 
   async deleteTaskById(taskId: number): Promise<void> {

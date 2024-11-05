@@ -1,5 +1,6 @@
 import { Model, RelationMappings, RelationMappingsThunk } from 'objection';
 import { User } from '../users/users.model';
+import { Task } from '../tasks/tasks.model';
 
 export class Project extends Model {
   static tableName = 'projects';
@@ -39,12 +40,22 @@ export class Project extends Model {
         to: 'users.id',
       },
     },
+
     user: {
       relation: Model.BelongsToOneRelation,
       modelClass: User,
       join: {
         from: 'projects.userId',
         to: 'users.id',
+      },
+
+      tasks: {
+        relation: Model.HasManyRelation,
+        modelClass: Task,
+        join: {
+          from: 'projects.id',
+          to: 'tasks.projectId',
+        },
       },
     },
   });

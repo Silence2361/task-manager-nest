@@ -12,6 +12,7 @@ export class Task extends Model {
   assigneeId: number;
   deadline: Date;
   status: boolean;
+  isCompleted: boolean;
   isArchived: boolean;
 
   static get jsonSchema() {
@@ -26,11 +27,13 @@ export class Task extends Model {
         assigneeId: { type: 'integer' },
         deadline: { type: 'string', format: 'date-time' },
         status: { type: 'boolean', default: false },
+        isCompleted: { type: 'boolean', default: false },
         isArchived: { type: 'boolean', default: false },
       },
     };
   }
-  static get relationMappings(): RelationMappings {
+
+  static get relationMappings() {
     return {
       project: {
         relation: Model.BelongsToOneRelation,
@@ -40,11 +43,15 @@ export class Task extends Model {
           to: 'projects.id',
         },
       },
-      assignee: {
-        relation: Model.BelongsToOneRelation,
+      assignees: {
+        relation: Model.ManyToManyRelation,
         modelClass: User,
         join: {
-          from: 'tasks.assigneeId',
+          from: 'tasks.id',
+          through: {
+            from: 'taskAssignees.taskId',
+            to: 'taskAssignees.userId',
+          },
           to: 'users.id',
         },
       },

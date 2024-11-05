@@ -6,6 +6,7 @@ export interface ITask {
   assigneeId: number;
   deadline: Date;
   status: boolean;
+  isCompleted: boolean;
   isArchived: boolean;
 }
 
@@ -14,17 +15,52 @@ export interface ICreateTask {
   description: string;
   projectId: number;
   assigneeId: number;
-  deadline: Date;
-  status: boolean;
 }
 
-export interface IUpdateTask {
+export interface ICreateTaskResponse {
+  id: number;
+}
+
+export interface IGetAllTasksResponse {
+  id: number;
+  title: string;
+  description: string;
+  projectId: number;
+  assigneeId: number;
+  deadline: Date;
+  status: boolean;
+  isCompleted: boolean;
+  isArchived: boolean;
+}
+
+export interface IGetTaskById {
+  id: number;
+}
+
+export interface IGetTaskByIdResponse {
+  id: number;
+  title: string;
+  description: string;
+  projectId: number;
+  assigneeId: number;
+  deadline: Date;
+  status: boolean;
+  isCompleted: boolean;
+  isArchived: boolean;
+}
+
+export interface IUpdateTaskById {
   title?: string;
   description?: string;
   projectId?: number;
   assigneeId?: number;
   deadline?: Date;
   status?: boolean;
+  isArchived?: boolean;
+}
+
+export interface IDeleteTaskById {
+  id: number;
 }
 
 export interface IArchivedTask {
