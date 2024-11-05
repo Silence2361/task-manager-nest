@@ -30,7 +30,11 @@ export class AuthDto {
   @MaxLength(16)
   password: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Role of the user',
+    enum: ['ADMIN', 'EMPLOYEE'],
+    example: 'ADMIN',
+  })
   @IsString()
   roleName: string;
 }
